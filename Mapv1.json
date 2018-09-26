@@ -1,0 +1,74 @@
+{
+ "$schema": "https://vega.github.io/schema/vega/v4.json",
+ "width": 960,
+ "height": 500,
+ "autosize": "none",
+
+ "data": [
+   {
+     "name": "Losses",
+     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/losses2015_transformed.csv?token=AVPWBA7BrZ9GPVFgAxOO4DKxsH19-YJEks5btBchwA%3D%3D",
+     "format": {"type": "csv", "parse": "auto"},
+     "transform": [
+        {"type": "aggregate",
+         "groupby": ["State_Code"],
+         "ops": ["sum"],
+         "fields": ["Amount"],
+          "as": ["Amt"]
+      
+        }
+          ]
+   },
+   {
+     "name": "states",
+     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/us-10m.json?token=AVPWBLQt2a7OMrr0C1e8wikia_sX0yxcks5btBrrwA%3D%3D",
+     "format": {"type": "topojson", "feature": "states"},
+     "transform": [
+       {  "type": "lookup", "from": "Losses", "key": "State_Code", "fields": ["id"], "values": ["Amt","State_Abv"] },
+       { "type": "filter", "expr": "datum.Amt != null" }
+      
+     ]
+   }
+ ],
+
+ "projections": [
+   {
+     "name": "projection",
+     "type": "albersUsa"
+   }
+ ],
+
+"legends": [
+   {
+     "fill": "color",
+     "orient": "bottom-right",
+     "title": "Losses"
+   }
+ ],
+
+ "scales": [
+   {
+     "name": "color",
+     "type": "quantize",
+     "domain": [0, 270000000],
+     "range": {"scheme": "set2"}
+   }
+ ],
+
+
+
+ "marks": [
+   {
+     "type": "shape",
+     "from": {"data": "states"},
+     "encode": {
+       "enter": { "tooltip": {"signal": "datum.Amt"}},
+       "update": { "fill": {"scale": "color", "field": "Amt"} },
+       "hover": { "fill": {"value": "yellow"} }
+     },
+     "transform": [
+       { "type": "geoshape", "projection": "projection" }
+     ]
+   }
+ ]
+}

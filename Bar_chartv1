@@ -1,0 +1,105 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "width": 1000,
+  "height": 600,
+ 
+
+"signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    }
+  ],
+"title": {
+    "text": "Losses 2015 [$] State: All",
+    "anchor": "start",
+    "frame": "group"
+  },
+  "data": [
+    {
+      "name": "table",
+      "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/losses2015_transformed.csv?token=AVPWBA7BrZ9GPVFgAxOO4DKxsH19-YJEks5btBchwA%3D%3D",
+      "format": {"type": "csv", "parse": "auto"},
+      "transform": [
+        {"type": "aggregate",
+         "groupby": ["Damage_Descp"],
+         "ops": ["sum"],
+         "fields": ["Amount"],
+          "as": ["Amt"]
+      
+        }
+          ]
+    }
+  ],
+
+  
+
+  "scales": [
+    {
+      "name": "xaxis",
+      "domain": {"data": "table", "field": "Amt"},
+      "range": "width",
+     "type": "linear",
+      "round": true
+    },
+    {
+      "name": "yaxis",
+      "domain": {"data": "table", "field": "Damage_Descp","sort": {"op": "max", "field": "Amt", "order": "ascending"}},
+       "type": "band",
+      "range": "height",
+      "padding": 0.1
+      
+    }
+  ],
+
+  "axes": [
+    { "orient": "bottom", "scale": "xaxis", "format": "$,d",
+      "tickCount": 6 },
+    { "orient": "left", "scale": "yaxis" }
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data":"table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xaxis", "value": 0},
+          "x2": {"scale": "xaxis", "field": "Amt"},
+          "y": {"scale": "yaxis", "field": "Damage_Descp"},
+          "height": {"scale": "yaxis", "band": 1}        
+        },
+        "update": {
+          "fill": {"value": "steelblue"}
+        },
+        "hover": {
+          "fill": {"value": "yellow"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "#333"}
+        },
+        "update": {
+          "x": {"scale": "xaxis", "signal": "tooltip.Amt", "band": 0.5},
+          "y": {"scale": "yaxis", "signal": "tooltip.Damage_Descp", "offset": -2},
+          "text": {"signal": "tooltip.Amt"},
+          "fillOpacity": [
+            {"test": "datum === tooltip", "value": 0},
+            {"value": 1}
+          ]
+        }
+      }
+    }
+    
+  ]
+}
