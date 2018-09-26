@@ -7,7 +7,7 @@
  "data": [
    {
      "name": "Losses",
-     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/losses2015_transformed.csv?token=AVPWBA7BrZ9GPVFgAxOO4DKxsH19-YJEks5btBchwA%3D%3D",
+     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/losses2015_transformed.csv",
      "format": {"type": "csv", "parse": "auto"},
      "transform": [
         {"type": "aggregate",
@@ -21,7 +21,7 @@
    },
    {
      "name": "states",
-     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/us-10m.json?token=AVPWBLQt2a7OMrr0C1e8wikia_sX0yxcks5btBrrwA%3D%3D",
+     "url": "https://raw.githubusercontent.com/pranaleejadhav/Vega_Assignment/master/us-10m.json",
      "format": {"type": "topojson", "feature": "states"},
      "transform": [
        {  "type": "lookup", "from": "Losses", "key": "State_Code", "fields": ["id"], "values": ["Amt","State_Abv"] },
