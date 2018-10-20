@@ -5,8 +5,8 @@ Please open index.html to view visualizations.
 To create an  interactive  visualization  system  to  explore  the  cause  of  loss  indemnities  dataset  for 2015 available at http://www.rma.usda.gov/data/cause.html. 
 
 The visualizations have been made in:
-## Vega and
-## Tableau.
+- Vega and
+- Tableau.
 
 # The visualization system should contain two views:
 
